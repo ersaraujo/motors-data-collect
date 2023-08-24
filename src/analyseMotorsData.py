@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import datetime
 
 def deserializeLogLineToData(log_line):
     motors = log_line[0:3]
@@ -11,17 +12,24 @@ def plot_multiple_graphs(x_data, y_data_list, labels):
     plt.figure(figsize=(20, 10))  # Set the figure size
     
     for i, y_data in enumerate(y_data_list):
-        plt.plot(x_data, y_data, marker='o', label=labels[i])
+        plt.plot(x_data, y_data, marker=',', label=labels[i])
     
     plt.xlabel("TIME")
     plt.ylabel("MOTOR")
     plt.title("MOTOR X TIME")
     plt.legend()
     plt.grid(True)
-    plt.savefig(fname='motor_graph.png')
+
+    # Get the current date and time
+    current_datetime = datetime.datetime.now()
+    
+    # Format the date and time as a string
+    formatted_datetime = current_datetime.strftime("%Y-%m-%d_%H-%M-%S")
+
+    plt.savefig(fname=f'./results/motor_response_{formatted_datetime}.png')
 
 if __name__ == "__main__":
-    log = np.loadtxt('motor_log.csv', delimiter=',', skiprows=1)
+    log = np.loadtxt('./results/motor_log_2023-08-24_18-09-51.csv', delimiter=',', skiprows=1)
 
     # Indicates which motor we want to analyze.
     which_motor = 0
