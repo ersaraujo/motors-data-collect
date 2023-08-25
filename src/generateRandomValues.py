@@ -11,10 +11,10 @@ def load_pwm_values(file):
     return pwms
 
 if __name__ == "__main__":
-    start_range = -25
-    end_range = 25
-    number_of_values = 49
-    seed_value = 42  # You can choose any integer as the seed
+    start_range = -25       # MIN PWM VALUE
+    end_range = 25          # MAX PWM VALUE
+    number_of_values = 49   # LIST SIZE
+    seed_value = 42         # SEED FOR GENERATING RANDOM VALUES
     
     random_values = generate_random_values_with_seed(start_range, end_range, number_of_values, seed_value)
     np.savetxt(f'random_pwm_values_with_seed_{seed_value}.txt', random_values)
