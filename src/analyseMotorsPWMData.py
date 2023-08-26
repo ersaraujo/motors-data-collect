@@ -22,7 +22,7 @@ def plot_multiple_graphs(x_data, y_data_list, labels, formatted_datetime):
     plt.savefig(fname=f'./results/motor_response_{formatted_datetime}.png')
 
 if __name__ == "__main__":
-    formatted_datetime = '2023-08-26_20-37-18'
+    formatted_datetime = '2023-08-26_20-42-02'
     log = np.loadtxt(f'./results/motor_log_{formatted_datetime}.csv', delimiter=',', skiprows=1)
 
     # Indicates which motor we want to analyze.
