@@ -16,14 +16,18 @@ def recvSSLMessage(udp_sock):
                 has_msg = True
             except:
                 break 
-        motors = [msg.m1, msg.m2, msg.m3, msg.m4]
-        inputs = [msg.pwm1, msg.pwm2, msg.pwm3, msg.pwm4]
+        current_speeds = [msg.current_m1, msg.current_m2, msg.current_m3, msg.current_m4]
+        pwms = [msg.pwm_m1, msg.pwm_m2, msg.pwm_m3, msg.pwm_m4]
+        desired_speeds = [msg.desired_m1, msg.desired_m2, msg.desired_m3, msg.desired_m4]
         timestamp = msg.msgTime
         
-        return has_msg, motors, inputs, timestamp
+        return has_msg, current_speeds, pwms, desired_speeds, timestamp
 
-def serializeMsgToLog(motors, inputs, timestamp):
-    return motors[0], motors[1], motors[2], motors[3], inputs[0], inputs[1], inputs[2], inputs[3], timestamp
+def serializeMsgToLog(current_speeds, pwms, desired_speeds, timestamp):
+    return current_speeds[0], current_speeds[1], current_speeds[2], current_speeds[3], \
+        pwms[0], pwms[1], pwms[2], pwms[3], \
+        desired_speeds[0], desired_speeds[1], desired_speeds[2], desired_speeds[3], \
+        timestamp
 
 def load_pwm_values(file):
     pwms = np.loadtxt(file)
@@ -41,7 +45,8 @@ if __name__ ==  "__main__":
 
     # CHOOSE FILE FOR PWM VALUES
     seed = 42
-    pwms = load_pwm_values(f'./pwm_inputs/random_pwm_values_with_seed_{seed}.txt')
+    # pwms = load_pwm_values(f'./pwm_inputs/random_pwm_values_with_seed_{seed}.txt')
+    pwms = [15, -15, 0]
     
     # CONFIGURE TIME BETWEEN MESSAGES
     msg_times = 3                       # REPEATS EACH MESSAGE 3 TIMES FOR RELIABILITY
@@ -63,10 +68,11 @@ if __name__ ==  "__main__":
             time.sleep(sleep_between_iterations_ms/1000)
 
             # RECV MESSAGE
-            has_msg, motors, inputs, timestamp = recvSSLMessage(conn)
+            has_msg, current_speeds, pwms, desired_speeds, timestamp = recvSSLMessage(conn)
             if has_msg:
-                log_msg = serializeMsgToLog(motors, inputs, timestamp)
+                log_msg = serializeMsgToLog(current_speeds, pwms, desired_speeds, timestamp)
                 log.append(log_msg)
+                print(pwms)
 
             # COUNT TIME
             elapsed_time = time.time() - start
@@ -88,7 +94,7 @@ if __name__ ==  "__main__":
         formatted_datetime = current_datetime.strftime("%Y-%m-%d_%H-%M-%S")
 
         print(f"Saving motors log: {len(log)}")
-        names = 'M1, M2, M3, M4, PWM1, PWM2, PWM3, PWM4, TIMESTAMP'
+        names = 'CURRENT_M1, CURRENT_M2, CURRENT_M3, CURRENT_M4, PWM_M1, PWM_M2, PWM_M3, PWM_M4, DESIRED_M1, DESIRED_M2, DESIRED_M3, DESIRED_M4, TIMESTAMP'
         np.savetxt(f'./results/motor_log_{formatted_datetime}.csv', \
                    log,
                    delimiter=',',

@@ -60,13 +60,17 @@ message protoMotorsPWMSSL{
 }
 
 message protoMotorsDataSSL{
-    double m1 = 1;
-    double m2 = 2;
-    double m3 = 3;
-    double m4 = 4;
-    double pwm1 = 5;
-    double pwm2 = 6;
-    double pwm3 = 7;
-    double pwm4 = 8;
-    double msgTime = 9;
+    double current_m1 = 1;
+    double current_m2 = 2;
+    double current_m3 = 3;
+    double current_m4 = 4;
+    double pwm_m1 = 5;
+    double pwm_m2 = 6;
+    double pwm_m3 = 7;
+    double pwm_m4 = 8;
+    double desired_m1 = 9;
+    double desired_m2 = 10;
+    double desired_m3 = 11;
+    double desired_m4 = 12;
+    double msgTime = 13;
 }

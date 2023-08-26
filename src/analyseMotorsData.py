@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 def deserializeLogLineToData(log_line):
     motors = log_line[0:3]
     inputs = log_line[4:7]
-    timestamp = log_line[8]
+    timestamp = log_line[8+4]
     return motors, inputs, timestamp
 
 def plot_multiple_graphs(x_data, y_data_list, labels, formatted_datetime):
@@ -22,7 +22,7 @@ def plot_multiple_graphs(x_data, y_data_list, labels, formatted_datetime):
     plt.savefig(fname=f'./results/motor_response_{formatted_datetime}.png')
 
 if __name__ == "__main__":
-    formatted_datetime = '2023-08-24_18-09-51'
+    formatted_datetime = '2023-08-26_20-37-18'
     log = np.loadtxt(f'./results/motor_log_{formatted_datetime}.csv', delimiter=',', skiprows=1)
 
     # Indicates which motor we want to analyze.
