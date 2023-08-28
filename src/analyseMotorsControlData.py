@@ -78,14 +78,8 @@ if __name__ == "__main__":
         motors.append(motor_data[which_motor])
         inputs.append(input_data[which_motor])
         desired.append(desired_data[which_motor])
-
-        if ((abs(input_data[which_motor] - last_input) > EPS_PWM) or (timestamp_data - last_timestamp < 0)) and (len(timestamps) > 0):
-            initial_time_offset += last_timestamp
-        timestamps.append(timestamp_data + initial_time_offset)
+        timestamps.append(timestamp_data)
         
-        last_timestamp = timestamp_data
-        last_input = input_data[which_motor]
-
     plot_multiple_graphs(timestamps, [motors, desired, inputs], ["current rad/s", "desired rad/s", "PWM"], formatted_datetime)
 
 
