@@ -49,9 +49,9 @@ if __name__ ==  "__main__":
     pwms = [15, -15, 0]
     
     # CONFIGURE TIME BETWEEN MESSAGES
-    msg_times = 3                       # REPEATS EACH MESSAGE 3 TIMES FOR RELIABILITY
-    time_between_msgs = 3               # EXECUTES EACH COMMAND FOR 3 SECONDS
-    sleep_between_iterations_ms = 0.5   # SLEEPS FOR 0.5 SECONDS AT EACH ITERATION
+    msg_times = 3                        # REPEATS EACH MESSAGE 3 TIMES FOR RELIABILITY
+    time_between_msgs = 1                # EXECUTES EACH COMMAND FOR 1 SECONDS
+    sleep_between_iterations_ms = 0.25   # SLEEPS FOR 0.25 SECONDS AT EACH ITERATION
     
     log = []
 
