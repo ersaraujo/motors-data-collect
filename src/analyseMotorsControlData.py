@@ -80,7 +80,7 @@ if __name__ == "__main__":
         desired.append(desired_data[which_motor])
         timestamps.append(timestamp_data)
         
-    plot_multiple_graphs(timestamps, [motors, desired, inputs], ["current rad/s", "desired rad/s", "PWM"], formatted_datetime)
+    plot_multiple_graphs(timestamps, [inputs, motors, desired], ["PWM", "current rad/s", "desired rad/s"], formatted_datetime)
 
 
 
