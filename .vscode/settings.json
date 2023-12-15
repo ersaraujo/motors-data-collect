@@ -1,0 +1,8 @@
+{
+    "python.analysis.extraPaths": [
+        "./src/proto"
+    ],
+    "cSpell.words": [
+        "datacollectutils"
+    ]
+}
