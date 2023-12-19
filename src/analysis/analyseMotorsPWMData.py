@@ -3,10 +3,11 @@ import utils.motorplotlib as mp
 
 if __name__ == "__main__":
     path, formatted_datetime = mp.getMostRecentFile()
+    print(path)
     log = np.loadtxt(path, delimiter=',', skiprows=1)
 
     # Indicates which motor we want to analyze.
-    which_motor = 0
+    which_motor = 1
 
     # Data to plot.
     motors = []
