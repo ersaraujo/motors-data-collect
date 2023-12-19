@@ -25,7 +25,7 @@ def plotMultipleGraphs(x_data, y_data_list, labels, formatted_datetime):
 
     plt.savefig(fname=path + '.png')
 
-def getMostRecentFile(file_prefix = 'motor_log_', file_extension=".csv"):
+def getMostRecentFile(file_prefix = 'motor_logs_', file_extension=".csv"):
     # Get the path to the folder
     path = getResultsPath() + '/logs'
 
@@ -34,7 +34,6 @@ def getMostRecentFile(file_prefix = 'motor_log_', file_extension=".csv"):
 
     # Filter out only the files with the desired format and extension
     formatted_files = [file for file in files if file.startswith(file_prefix) and file.endswith(file_extension)]
-
     # Sort the files based on their modified timestamps (most recent first)
     sorted_files = sorted(formatted_files, key=lambda x: os.path.getmtime(os.path.join(path, x)), reverse=True)
 
