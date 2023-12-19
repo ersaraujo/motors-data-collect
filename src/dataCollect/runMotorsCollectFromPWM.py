@@ -1,5 +1,5 @@
 from socket import socket, AF_INET, SOCK_DGRAM
-import CommTypes_pb2 as pb
+import proto.CommTypes_pb2 as pb
 import time
 import datetime
 import numpy as np
@@ -17,8 +17,8 @@ if __name__ ==  "__main__":
 
     # CHOOSE FILE FOR PWM VALUES
     seed = 42
-    # pwms = ul.loadPWMValues(f'./pwm_inputs/random_pwm_values_with_seed_{seed}.txt')
-    pwms = [15, -15, 0]
+    pwms = ul.loadPWMValues(f'/home/elisson/Documents/motors-data-collect/src/utils/random_pwm_values_with_seed_42.txt')
+    # pwms = [15, -15, 0]
     
     # CONFIGURE TIME BETWEEN MESSAGES
     msg_times = 3                        # REPEATS EACH MESSAGE 3 TIMES FOR RELIABILITY
