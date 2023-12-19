@@ -1,4 +1,4 @@
-import CommTypes_pb2 as pb
+import proto.CommTypes_pb2 as pb
 import numpy as np
 import os
 
