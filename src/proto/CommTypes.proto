@@ -59,6 +59,12 @@ message protoMotorsPWMSSL{
     double m4 = 4;
 }
 
+message protoRobotSpeed{
+    double vx = 1;
+    double vy = 2;
+    double w  = 3;
+}
+
 message protoMotorsDataSSL{
     double current_m1 = 1;
     double current_m2 = 2;

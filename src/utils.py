@@ -64,18 +64,17 @@ class Comm:
         self.conn.bind(('', self.portRobot))
         self.conn.settimeout(0)
 
-        self.msg = pb.protoMotorsPWMSSL()
+        self.msg = pb.protoRobotSpeed()
 
-    def __send():
-        self.socket.sendto(self.msg.SerializeToString(), (self.server, self.portPC))
+    def __send(): 
+        self.conn.sendto(self.msg.SerializeToString(), (self.server, self.portPC))
     
     def sendCommand(self, repeats=3, interval=1, sleep=0.25, values=[]):
         log = []
         for value in values:
-            self.msg.m1 = value
-            self.msg.m2 = value
-            self.msg.m3 = value
-            self.msg.m4 = value
+            self.msg.vx = value
+            self.msg.vy = 0
+            self.msg.w = 0
 
             start = time.time()
             while True:
@@ -92,6 +91,7 @@ class Comm:
             if elapsed_time > interval:
                 for i in range(repeats):
                     self.__send()
+                    print(f'Sent command {i+1}/{repeats}')
                 print(f'Current msg elapsed time: {elapsed_time:.3f}')
                 print(f'{msg}')
                 break
@@ -115,17 +115,20 @@ class Comm:
                 timestamp
 
     def recvSSLMessage(self):
-        try:
-            data, addr = self.conn.recvfrom(1024)
-            msg = pb.protoMotorsSSL()
-            msg.ParseFromString(data)
+        has_msg = False
+        msg = pb.protoMotorsSSL()
 
-            current_speeds = [msg.current_m1, msg.current_m2, msg.current_m3, msg.current_m4]
-            pwms = [msg.pwm_m1, msg.pwm_m2, msg.pwm_m3, msg.pwm_m4]
-            desired_speeds = [msg.desired_m1, msg.desired_m2, msg.desired_m3, msg.desired_m4]
-            timestamp = msg.msgTime
-            
-            return True, current_speeds, pwms, desired_speeds, timestamp
-        except:
-            return False, None, None, None, None
-
+        while True:
+            try:
+                data, addr = self.conn.recvfrom(1024)
+                msg.ParseFromString(data)
+                has_msg = True
+            except:
+                break
+                
+        current_speeds = [msg.current_m1, msg.current_m2, msg.current_m3, msg.current_m4]
+        pwms = [msg.pwm_m1, msg.pwm_m2, msg.pwm_m3, msg.pwm_m4]
+        desired_speeds = [msg.desired_m1, msg.desired_m2, msg.desired_m3, msg.desired_m4]
+        timestamp = msg.msgTime
+        
+        return has_msg, current_speeds, pwms, desired_speeds, timestamp
