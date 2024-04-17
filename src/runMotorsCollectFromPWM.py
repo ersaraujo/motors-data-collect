@@ -6,7 +6,7 @@ def main():
     pwms = Utils.getPWMValues(0)
     print(f"Loaded PWM values: {pwms}")
 
-    conn.sendCommand(3, 3, 0.25, pwms)
+    conn.sendCommand(3, 2, 0.25, pwms)
 
 if __name__ ==  "__main__":
     main()

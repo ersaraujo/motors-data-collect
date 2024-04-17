@@ -8,13 +8,13 @@ from socket import socket, AF_INET, SOCK_DGRAM
 
 class Utils:
     def getLogsPath():
-        return getFolderPath('results/logs')
+        return Utils.getFolderPath('results/logs')
 
     def getPlotsPath():
-        return getFolderPath('results/plots')
+        return Utils.getFolderPath('results/plots')
 
     def getResultsPath():
-        return getFolderPath('results')
+        return Utils.getFolderPath('results')
 
     def getPWMPath():
         return Utils.getFolderPath('pwm_inputs')
