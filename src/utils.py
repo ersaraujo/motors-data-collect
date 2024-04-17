@@ -66,7 +66,7 @@ class Comm:
 
         self.msg = pb.protoRobotSpeed()
 
-    def __send(): 
+    def __send(self): 
         self.conn.sendto(self.msg.SerializeToString(), (self.server, self.portPC))
     
     def sendCommand(self, repeats=3, interval=1, sleep=0.25, values=[]):
@@ -93,7 +93,7 @@ class Comm:
                         self.__send()
                         print(f'Sent command {i+1}/{repeats}')
                     print(f'Current msg elapsed time: {elapsed_time:.3f}')
-                    print(f'{msg}')
+                    print(f'{self.msg}')
                     break
 
         if len(log) > 0:
