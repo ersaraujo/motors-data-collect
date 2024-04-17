@@ -35,15 +35,22 @@ class Utils:
         return random_values
     
     def loadPWMValues(file):
-        pwms = np.loadtxt(file)
+        # TODO: Check if file exists
+        if not os.path.exists(file):
+            print('No PWM values found')
+            seed = int(input('Define seed and press enter to generate new values: '))
+            pwms = Utils.generateRandomValues(-25, 25, 30, seed)
+            Utils.savePWMValues(seed, pwms)
+        else:
+            pwms = np.loadtxt(file)
+            
         return pwms
 
-    def savePWMValues(file, values):
-        path = Utils.getPWMPath()
-        np.savetxt(file, values)
+    def savePWMValues(seed, values):
+        path = Utils.getPWMPath() + f'/pwm_values_{seed}.txt'
+        np.savetxt(path, values)
 
     def getPWMValues(seed = 42):
-        # TODO: Check if file exists
         file = Utils.getPWMPath() + f'/pwm_values_{seed}.txt'
         return Utils.loadPWMValues(file)
 
