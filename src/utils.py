@@ -116,7 +116,7 @@ class Comm:
 
     def recvSSLMessage(self):
         has_msg = False
-        msg = pb.protoMotorsSSL()
+        msg = pb.protoMotorsDataSSL()
 
         while True:
             try:
