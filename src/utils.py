@@ -84,17 +84,17 @@ class Comm:
                 if has_msg:
                     log_msg = self.serializeMsgToLog(current_speeds, pwms, desired_speeds, timestamp)
                     log.append(log_msg)
-                    print(pwms)
+                    # print(pwms)
 
-            elapsed_time = time.time() - start
+                elapsed_time = time.time() - start
 
-            if elapsed_time > interval:
-                for i in range(repeats):
-                    self.__send()
-                    print(f'Sent command {i+1}/{repeats}')
-                print(f'Current msg elapsed time: {elapsed_time:.3f}')
-                print(f'{msg}')
-                break
+                if elapsed_time > interval:
+                    for i in range(repeats):
+                        self.__send()
+                        print(f'Sent command {i+1}/{repeats}')
+                    print(f'Current msg elapsed time: {elapsed_time:.3f}')
+                    print(f'{msg}')
+                    break
 
         if len(log) > 0:
             current_datetime = datetime.datetime.now()
@@ -108,7 +108,7 @@ class Comm:
 
         print('Finished sending commands')
 
-    def serializeMsgToLog(current_speeds, pwms, desired_speeds, timestamp):
+    def serializeMsgToLog(self, current_speeds, pwms, desired_speeds, timestamp):
         return current_speeds[0], current_speeds[1], current_speeds[2], current_speeds[3], \
                 pwms[0], pwms[1], pwms[2], pwms[3], \
                 desired_speeds[0], desired_speeds[1], desired_speeds[2], desired_speeds[3], \
