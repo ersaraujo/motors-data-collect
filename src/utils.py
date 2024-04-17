@@ -69,7 +69,7 @@ class Comm:
     def __send(self): 
         self.conn.sendto(self.msg.SerializeToString(), (self.server, self.portPC))
     
-    def sendCommand(self, repeats=3, interval=3, sleep=0.25, values=[]):
+    def sendCommand(self, repeats=6, interval=2, sleep=1, values=[]):
         log = []
         for value in values:
             self.msg.vx = value
@@ -78,7 +78,7 @@ class Comm:
 
             start = time.time()
             while True:
-                time.sleep(sleep/1000)
+                time.sleep(sleep)
 
                 has_msg, current_speeds, pwms, desired_speeds, timestamp = self.recvSSLMessage()
                 if has_msg:
@@ -89,12 +89,11 @@ class Comm:
                 elapsed_time = time.time() - start
 
                 if elapsed_time > interval:
-                    for i in range(repeats):
-                        self.__send()
-                        print(f'Sent command {i+1}/{repeats}')
                     print(f'Current msg elapsed time: {elapsed_time:.3f}')
                     print(f'{self.msg}')
                     break
+                else:
+                    self.__send()
 
         if len(log) > 0:
             current_datetime = datetime.datetime.now()
