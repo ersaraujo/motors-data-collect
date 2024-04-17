@@ -69,7 +69,7 @@ class Comm:
     def __send(self): 
         self.conn.sendto(self.msg.SerializeToString(), (self.server, self.portPC))
     
-    def sendCommand(self, repeats=3, interval=1, sleep=0.25, values=[]):
+    def sendCommand(self, repeats=3, interval=3, sleep=0.25, values=[]):
         log = []
         for value in values:
             self.msg.vx = value
