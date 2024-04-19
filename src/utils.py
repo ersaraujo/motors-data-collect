@@ -65,9 +65,13 @@ class Comm:
         self.conn.settimeout(0)
 
         self.msg = pb.protoRobotSpeed()
+        self.PWMMsg = pb.protoMotorsPWMSSL()
 
     def __send(self): 
         self.conn.sendto(self.msg.SerializeToString(), (self.server, self.portPC))
+    
+    def __sendPWM(self): 
+        self.conn.sendto(self.PWMMsg.SerializeToString(), (self.server, self.portPC))
     
     def sendCommand(self, repeats=6, interval=2, sleep=1, values=[]):
         log = []
@@ -95,6 +99,43 @@ class Comm:
                 else:
                     self.__send()
 
+        if len(log) > 0:
+            current_datetime = datetime.datetime.now()
+            formatted_datetime = current_datetime.strftime("%Y-%m-%d_%H-%M-%S")
+            path = Utils.getLogsPath() + '/motor_logs_' + formatted_datetime + '.csv'
+            print(f"Saving motors log: {len(log)}")
+            names = 'CURRENT_M1, CURRENT_M2, CURRENT_M3, CURRENT_M4, PWM_M1, PWM_M2, PWM_M3, PWM_M4, DESIRED_M1, DESIRED_M2, DESIRED_M3, DESIRED_M4, TIMESTAMP'
+            np.savetxt(path, log, delimiter=',', fmt='%s', header=names)
+        else:
+            print('No logs to save')
+
+        print('Finished sending commands')
+
+    def sendPWM(self, interval=2, sleep=1, m1=[], m2=[], m3=[], m4=[]):
+
+        for x1, x2, x3, x4 in zip(m1, m2, m3, m4):
+            self.PWMMsg.m1 = x1
+            self.PWMMsg.m2 = x2
+            self.PWMMsg.m3 = x3
+            self.PWMMsg.m4 = x4
+
+            start = time.time()
+            while True:
+                time.sleep(sleep)
+
+                has_msg, current_speeds, pwms, desired_speeds, timestamp = self.recvSSLMessage()
+                if has_msg:
+                    log_msg = self.serializeMsgToLog(current_speeds, pwms, desired_speeds, timestamp)
+                    log.append(log_msg)
+
+                elapsed_time = time.time() - start
+
+                if elapsed_time > interval:
+                    print(f'Current msg elapsed time: {elapsed_time:.3f}')
+                    print(f'{self.PWMMsg}')
+                    break
+                else:
+                    self.__sendPWM()
         if len(log) > 0:
             current_datetime = datetime.datetime.now()
             formatted_datetime = current_datetime.strftime("%Y-%m-%d_%H-%M-%S")
