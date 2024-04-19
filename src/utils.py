@@ -82,7 +82,7 @@ class Comm:
 
             start = time.time()
             while True:
-                time.sleep(sleep)
+                time.sleep(sleep/1000)
 
                 has_msg, current_speeds, pwms, desired_speeds, timestamp = self.recvSSLMessage()
                 if has_msg:
@@ -103,7 +103,7 @@ class Comm:
             current_datetime = datetime.datetime.now()
             formatted_datetime = current_datetime.strftime("%Y-%m-%d_%H-%M-%S")
             path = Utils.getLogsPath() + '/motor_logs_' + formatted_datetime + '.csv'
-            print(f"Saving motors log: {len(log)}")
+            print(f"Saving motors lprotoRobotSpeed_sizeog: {len(log)}")
             names = 'CURRENT_M1, CURRENT_M2, CURRENT_M3, CURRENT_M4, PWM_M1, PWM_M2, PWM_M3, PWM_M4, DESIRED_M1, DESIRED_M2, DESIRED_M3, DESIRED_M4, TIMESTAMP'
             np.savetxt(path, log, delimiter=',', fmt='%s', header=names)
         else:
@@ -111,8 +111,8 @@ class Comm:
 
         print('Finished sending commands')
 
-    def sendPWM(self, interval=2, sleep=1, m1=[], m2=[], m3=[], m4=[]):
-
+    def sendPWM(self, interval=3, sleep=0.25, m1=[], m2=[], m3=[], m4=[]):
+        log = []    
         for x1, x2, x3, x4 in zip(m1, m2, m3, m4):
             self.PWMMsg.m1 = x1
             self.PWMMsg.m2 = x2
@@ -121,7 +121,7 @@ class Comm:
 
             start = time.time()
             while True:
-                time.sleep(sleep)
+                time.sleep(sleep/1000)
 
                 has_msg, current_speeds, pwms, desired_speeds, timestamp = self.recvSSLMessage()
                 if has_msg:
@@ -134,8 +134,8 @@ class Comm:
                     print(f'Current msg elapsed time: {elapsed_time:.3f}')
                     print(f'{self.PWMMsg}')
                     break
-                else:
-                    self.__sendPWM()
+                self.__sendPWM()
+
         if len(log) > 0:
             current_datetime = datetime.datetime.now()
             formatted_datetime = current_datetime.strftime("%Y-%m-%d_%H-%M-%S")
