@@ -118,6 +118,7 @@ class Comm:
             self.PWMMsg.m2 = x2
             self.PWMMsg.m3 = x3
             self.PWMMsg.m4 = x4
+            print(f'Sending PWM: {self.PWMMsg}')
 
             start = time.time()
             while True:
@@ -132,7 +133,7 @@ class Comm:
 
                 if elapsed_time > interval:
                     print(f'Current msg elapsed time: {elapsed_time:.3f}')
-                    print(f'{self.PWMMsg}')
+                    # print(f'{self.PWMMsg}')
                     break
                 self.__sendPWM()
 
